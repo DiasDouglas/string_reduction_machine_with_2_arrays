@@ -7,7 +7,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-char INPUT[100000000] = /*"S(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))";*/ "KS(KU)V";
+char INPUT[100000000] = /*"S(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))";*/ "K(KU)(VK)LYTY";
 char OUTPUT[100000000] = "";
 
 void K(char in[], char out[]){
@@ -45,7 +45,48 @@ void K(char in[], char out[]){
 			out[outPointer] = '\0';
 		}
 	} else {
+		int openParenthesis = 1;
+		int i = 2;
+		int j = 0;
 		
+		while(openParenthesis != 0){
+			if(in[i] == '(')
+				openParenthesis++;
+			else if(in[i] == ')')
+				openParenthesis--;
+			
+			if(openParenthesis != 0){
+				out[j] = in[i];
+				j++;
+			}
+			i++;
+		}
+		
+		if(in[i] != '('){
+			while(in[i + 1] != '\0'){
+				out[j] = in[i + 1];
+				i++;
+				j++;
+			}
+		} else {
+			int openParenthesis = 1;
+			i++;
+			
+			while(openParenthesis != 0){
+				if(in[i] == '(')
+					openParenthesis++;
+				else if(in[i] == ')')
+					openParenthesis--;
+				
+				i++;
+			}
+			
+			while(in[i] != '\0'){
+				out[j] = in[i];
+				i++;
+				j++;
+			}
+		}
 	}
 }
 
