@@ -7,8 +7,20 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-char INPUT[100000000] = /*"S(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))";*/ "SAB(CHJH)JHJ";
+char INPUT[100000000] = /*"S(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))(S(S(KS)(S(KK)(SKK)))(K(S(SKK)(SKK))))";*/ "SA(B2W)(CHJ)HJHJ";
 char OUTPUT[100000000] = "";
+
+int GetSubstringEnd(char in[], int end){
+	int openParenthesis = 1;
+	while(openParenthesis != '\0'){
+		if(in[end] == '(')
+			openParenthesis++;
+		else if(in[end] == ')')
+			openParenthesis--;
+		end++;
+	}
+	return end;
+}
 
 void K(char in[], char out[]){
 	if(in[1] != '('){
@@ -111,15 +123,7 @@ void S(char in[], char out[]){
 				out[j] = '\0';
 			} else {
 				int cStart = 3;
-				int cEnd = 4;
-				int openParenthesis = 1;
-				while(openParenthesis != '\0'){
-					if(in[cEnd] == '(')
-						openParenthesis++;
-					else if(in[cEnd] == ')')
-						openParenthesis--;
-					cEnd++;
-				}
+				int cEnd = GetSubstringEnd(in, cStart + 1);
 				
 				out[0] = '(';
 				out[1] = in[1];
@@ -152,10 +156,75 @@ void S(char in[], char out[]){
 				}
 				
 				out[iteratorOut] = '\0';
-				
 			}
 		} else {
+			int bStart = 2;
+			int bEnd = GetSubstringEnd(in, bStart + 1);
 			
+			if(in[bEnd] != '('){
+				out[0] = '(';
+				out[1] = in[1];
+				out[2] = in[bEnd];
+				out[3] = ')';
+				out[4] = '(';
+				
+				int inIterator, outIterator = 5;
+				for(inIterator = bStart; inIterator < bEnd; inIterator++){
+					out[outIterator] = in[inIterator];
+					outIterator++;
+				}
+				
+				out[outIterator] = in[bEnd];
+				outIterator++;
+				out[outIterator] = ')';
+				outIterator++;
+				
+				for(inIterator = bEnd + 1; in[inIterator] != '\0'; inIterator++){
+					out[outIterator] = in[inIterator];
+					outIterator++;
+				}
+				out[outIterator] = '\0';
+				
+			} else {
+				int cStart = bEnd;
+				int cEnd = GetSubstringEnd(in, cStart + 1);
+				
+				out[0] = '(';
+				out[1] = in[1];
+				
+				int inIterator, outIterator = 2;
+				for(inIterator = cStart; inIterator < cEnd; inIterator++){
+					out[outIterator] = in[inIterator];
+					outIterator++;
+				}
+				
+				out[outIterator] = ')';
+				outIterator++;
+				
+				out[outIterator] = '(';
+				outIterator++;
+				
+				for(inIterator = bStart; inIterator < bEnd; inIterator++){
+					out[outIterator] = in[inIterator];
+					outIterator++;
+				}
+				
+				inIterator = cStart;
+				for(inIterator = cStart; inIterator < cEnd; inIterator++){
+					out[outIterator] = in[inIterator];
+					outIterator++;
+				}
+				
+				out[outIterator] = ')';
+				outIterator++;
+				
+				for(inIterator = cEnd; in[inIterator] != '\0'; inIterator++){
+					out[outIterator] = in[inIterator];
+					outIterator++;
+				}
+				
+				out[outIterator] = '\0';
+			}
 		}
 	} else {
 		
