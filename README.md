@@ -5,3 +5,4 @@ Branches:
 * feat/0: Initial C source file
 * feat/1: K operator implementation
 * feat/2: S operator implementation
+* feat/3: I operator implementation
